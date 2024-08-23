@@ -16,6 +16,20 @@ class LineSignatureIsValid
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        // 前処理
+        $channelSecret = env('LINE_CHANNEL_SECRET'); // Channel secret string
+        $httpRequestBody = $request->getContent(); // Request body string
+        $hash = hash_hmac('sha256', $httpRequestBody, $channelSecret, true);
+        $signature = base64_encode($hash);
+        // Compare x-line-signature request header string and the signature
+        if($request->header('x-line-signature') !== $signature){
+            // err
+            // 一致しない場合は403 Forbidden(認証拒否)
+            return response()->json([
+                'message'=>'invalid request'
+            ],403);
+        }
+        return $next($request);//コントロール
+        // 後処理
     }
 }

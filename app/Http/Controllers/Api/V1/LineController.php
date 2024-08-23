@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
@@ -31,6 +31,7 @@ class LineController extends Controller
         // TODO: ここに具体的に実装
 
         // 1. 受け取った情報からメッセージの情報を取り出す
+        Log::debug($request->getContent());
         // 2. 受け取ったメッセージの内容から返信するメッセージを生成
         // 3. 返信メッセージを返信先に送信
 
